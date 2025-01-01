@@ -58,7 +58,7 @@ app.post('/', async (req, res) => {
             price,
             date
         } = req.body;
-
+;
         const haircut = new Haircuts({
             name,
             phone,
@@ -68,12 +68,21 @@ app.post('/', async (req, res) => {
         });
 
         await haircut.save();
-    }
 
+        res.json(haircut);
+    }
     catch (err) {
         console.error('Error saving haircut', err);
     }
 });
+
+
+
+
+
+
+
+
 
 
 app.get('/', async (_req, res) => {
