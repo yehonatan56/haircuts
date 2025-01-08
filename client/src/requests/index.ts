@@ -1,4 +1,4 @@
-const serverUrl = 'http://localhost:3000';
+const serverUrl = "http://localhost:3000";
 
 export interface Haircut {
     _id?: string;
@@ -13,11 +13,16 @@ export const getHaircuts = async (): Promise<Haircut[]> => {
     return response.json();
 };
 
+export const getTodayHaircuts = async (): Promise<Haircut[]> => {
+    const response = await fetch(`${serverUrl}/today`);
+    return response.json();
+};
+
 export const addHaircut = async (haircut: Haircut): Promise<Haircut> => {
     const response = await fetch(`${serverUrl}/`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
         },
         body: JSON.stringify(haircut),
     });
@@ -26,6 +31,6 @@ export const addHaircut = async (haircut: Haircut): Promise<Haircut> => {
 
 export const deleteHaircut = async (id: string): Promise<void> => {
     await fetch(`${serverUrl}/${id}`, {
-        method: 'DELETE',
+        method: "DELETE",
     });
 };

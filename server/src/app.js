@@ -77,6 +77,21 @@ app.get("/", async (_req, res) => {
   }
 });
 
+app.get("/today", async (_req, res) => {
+  try {
+    const today = new Date();
+    const haircuts = await Haircuts.find({
+      date: {
+        $gte: today.setHours(0, 0, 0, 0),
+        $lt: today.setHours(23, 59, 59, 999),
+      },
+    });
+    res.json(haircuts);
+  } catch (err) {
+    console.error("Error getting haircuts", err);
+  }
+});
+
 app.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
