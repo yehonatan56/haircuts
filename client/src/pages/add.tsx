@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { addHaircut, Haircut } from "../requests";
 
+type statuses = "waiting for submission" | "submitted successfully" | "date is invalid" | "phone number is invalid";
 export default function Add() {
     const [haircut, setHaircut] = useState<Haircut>({
         name: "",
@@ -9,6 +10,8 @@ export default function Add() {
         phone: "",
         date: new Date(),
     });
+
+    const [status, setStatus] = useState<statuses>("waiting for submission");
 
     return (
         <div style={{ textAlign: "center" }}>
@@ -25,7 +28,19 @@ export default function Add() {
                     margin: "auto",
                     marginTop: "200px",
                 }}
-                onSubmit={async () => {
+                onSubmit={async (e) => {
+                    e.preventDefault();
+                    if (haircut.date.getTime() < new Date().getTime()) {
+                        setStatus("date is invalid");
+                        return;
+                    }
+
+                    if (!haircut.phone.match(/^\d{10}$/)) {
+                        setStatus("phone number is invalid");
+                        return;
+                    }
+
+                    setStatus("submitted successfully");
                     await addHaircut(haircut);
                     setHaircut({
                         name: "",
@@ -80,6 +95,8 @@ export default function Add() {
                 <br />
 
                 <button type="submit">Add Customer</button>
+
+                <p>{status}</p>
             </form>
         </div>
     );
