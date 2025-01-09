@@ -14,6 +14,7 @@ const PORT = process.env.PORT || 3000;
 const CONNECTION_STRING =
   process.env.CONNECTION_STRING || "mongodb://localhost:27017/test";
 
+const TOKEN = process.env.TOKEN;
 const connectDB = async () => {
   try {
     await mongoose.connect(CONNECTION_STRING);
@@ -49,24 +50,61 @@ const haircuts = new mongoose.Schema({
 
 const Haircuts = mongoose.model("Haircuts", haircuts);
 
-app.post("/", async (req, res) => {
-  try {
-    const { name, phone, type, price, date } = req.body;
-    const haircut = new Haircuts({
-      name,
-      phone,
-      type,
-      price,
-      date,
-    });
+app.post(
+  "/",
+  async (req, res, next) => {
+    const { name, phone, price, date } = req.body;
 
-    await haircut.save();
+    const message = `
+    שלום  ${name},
+    נקבע לך תור לתספורת במחיר של  ${price} ש"ח
+    בתאריך  ${new Date(date).toLocaleDateString()}
+    בשעה  ${new Date(date).toLocaleTimeString()}
+    10 דקות לפני התור נשלח לך תזכורת
+    ציון😊
+    `;
 
-    res.json(haircut);
-  } catch (err) {
-    console.error("Error saving haircut", err);
-  }
-});
+    const phoneToWhatsapp = "972" + phone.slice(1);
+
+    fetch("https://gate.whapi.cloud/messages/text", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        Authorization: "Bearer " + TOKEN,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        typing_time: 0,
+        to: phoneToWhatsapp,
+        body: message,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log("Success:", data))
+      .catch((error) => console.error("Error:", error));
+
+    next();
+  },
+
+  async (req, res) => {
+    try {
+      const { name, phone, type, price, date } = req.body;
+      const haircut = new Haircuts({
+        name,
+        phone,
+        type,
+        price,
+        date,
+      });
+
+      await haircut.save();
+
+      res.json(haircut);
+    } catch (err) {
+      console.error("Error saving haircut", err);
+    }
+  },
+);
 
 app.get("/", async (_req, res) => {
   try {
@@ -101,3 +139,44 @@ app.delete("/:id", async (req, res) => {
     console.error("Error deleting haircut", err);
   }
 });
+
+setInterval(async () => {
+  try {
+    const tenMinutesLater = new Date(new Date().getTime() + 10 * 60 * 1000);
+    const haircut = await Haircuts.findOne({
+      date: {
+        $gte: tenMinutesLater,
+        $lt: new Date(tenMinutesLater.getTime() + 60 * 1000),
+      },
+    });
+    if (haircut) {
+      const phoneToWhatsapp = "972" + haircut.phone.slice(1);
+
+      const message = `
+        שלום  ${haircut.name},
+        תזכורת לתור שלך בעוד 10 דקות
+        ציון😊
+        `;
+
+      fetch("https://gate.whapi.cloud/messages/text", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          Authorization: "Bearer " + TOKEN,
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          typing_time: 0,
+          to: phoneToWhatsapp,
+          body: message,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => console.log("Success:", data))
+        .catch((error) => console.error("Error:", error));
+    }
+  } catch (err) {
+    console.error("Error retrieving haircut", err);
+  }
+}, 1000 * 60);
