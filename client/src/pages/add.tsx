@@ -59,22 +59,17 @@ export default function Add() {
                     required
                 />
                 <br />
-                <input
-                    type="number"
-                    placeholder="Price"
-                    value={haircut.price}
-                    onChange={(e) => setHaircut({ ...haircut, price: parseInt(e.target.value) })}
-                    required
-                />
-                <br />
 
-                <input
-                    type="text"
-                    placeholder="Type"
+                <label>Type</label>
+
+                <select
                     value={haircut.type}
                     onChange={(e) => setHaircut({ ...haircut, type: e.target.value })}
                     required
-                />
+                >
+                    <option value="0">Basic</option>
+                    <option value="1">Beard</option>
+                </select>
                 <br />
 
                 <input

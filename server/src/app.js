@@ -40,8 +40,9 @@ const haircuts = new mongoose.Schema({
     type: String,
     required: true,
   },
-  type: String,
-  price: Number,
+  type: {
+    enum: [0, 1],
+  },
   date: {
     type: Date,
     default: Date.now,
@@ -53,11 +54,11 @@ const Haircuts = mongoose.model("Haircuts", haircuts);
 app.post(
   "/",
   async (req, res, next) => {
-    const { name, phone, price, date } = req.body;
+    const { name, phone, type, date } = req.body;
 
     const message = `
     שלום  ${name},
-    נקבע לך תור לתספורת במחיר של  ${price} ש"ח
+    נקבע לך תור לתספורת במחיר של  ${type === 0 ? "50" : "60"}} ש"ח
     בתאריך  ${new Date(date).toLocaleDateString()}
     בשעה  ${new Date(date).toLocaleTimeString()}
     10 דקות לפני התור נשלח לך תזכורת
@@ -88,12 +89,11 @@ app.post(
 
   async (req, res) => {
     try {
-      const { name, phone, type, price, date } = req.body;
+      const { name, phone, type, date } = req.body;
       const haircut = new Haircuts({
         name,
         phone,
         type,
-        price,
         date,
       });
 
