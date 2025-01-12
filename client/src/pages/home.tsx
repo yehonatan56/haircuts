@@ -12,22 +12,22 @@ export default function Home() {
     }, []);
     return (
         <div>
-            <h1>Home</h1>
-            <h2>Today's Haircuts</h2>
+            <h1>בית</h1>
+            <h2>התספורות של היום</h2>
             <ScrollArea h={300}>
                 <ul>
                     {haircuts.map((haircut) => (
                         <li key={haircut._id}>
-                            <p style={{ display: "inline" }}>Name:</p>
+                            <p style={{ display: "inline" }}>שם:</p>
                             {haircut.name}
                             <br />
                             <br />
-                            <p style={{ display: "inline" }}>Type:</p>
-                            {haircut.type}
+                            <p style={{ display: "inline" }}>סוג:</p>
+                            {haircut.type === 0 ? "רגיל" : "זקן"}
                             <br />
 
                             <br />
-                            <p style={{ display: "inline" }}>Time:</p>
+                            <p style={{ display: "inline" }}>זמן:</p>
                             {new Date(haircut.date).getHours().toString() +
                                 ":" +
                                 new Date(haircut.date).getMinutes().toString()}

@@ -5,8 +5,7 @@ type statuses = "waiting for submission" | "submitted successfully" | "date is i
 export default function Add() {
     const [haircut, setHaircut] = useState<Haircut>({
         name: "",
-        price: 0,
-        type: "",
+        type: 0,
         phone: "",
         date: new Date(),
     });
@@ -15,7 +14,7 @@ export default function Add() {
 
     return (
         <div style={{ textAlign: "center" }}>
-            <h1>Add Customer</h1>
+            <h1>הוספת תור</h1>
             <form
                 style={{
                     lineHeight: "20px",
@@ -44,8 +43,7 @@ export default function Add() {
                     await addHaircut(haircut);
                     setHaircut({
                         name: "",
-                        price: 0,
-                        type: "",
+                        type: 0,
                         phone: "",
                         date: new Date(),
                     });
@@ -53,28 +51,28 @@ export default function Add() {
             >
                 <input
                     type="text"
-                    placeholder="Name"
+                    placeholder="שם"
                     value={haircut.name}
                     onChange={(e) => setHaircut({ ...haircut, name: e.target.value })}
                     required
                 />
                 <br />
 
-                <label>Type</label>
+                <label>סוג:</label>
 
                 <select
                     value={haircut.type}
-                    onChange={(e) => setHaircut({ ...haircut, type: e.target.value })}
+                    onChange={(e) => setHaircut({ ...haircut, type: +e.target.value })}
                     required
                 >
-                    <option value="0">Basic</option>
-                    <option value="1">Beard</option>
+                    <option value="0">רגיל</option>
+                    <option value="1">זקן</option>
                 </select>
                 <br />
 
                 <input
                     type="text"
-                    placeholder="Phone"
+                    placeholder="טלפון"
                     value={haircut.phone}
                     onChange={(e) => setHaircut({ ...haircut, phone: e.target.value })}
                     required
@@ -83,13 +81,13 @@ export default function Add() {
 
                 <input
                     type="datetime-local"
-                    placeholder="Date"
+                    placeholder="זמן"
                     onChange={(e) => setHaircut({ ...haircut, date: new Date(e.target.value) })}
                     required
                 />
                 <br />
 
-                <button type="submit">Add Customer</button>
+                <button type="submit">הוספת תור</button>
 
                 <p>{status}</p>
             </form>

@@ -3,8 +3,7 @@ const serverUrl = "http://localhost:3000";
 export interface Haircut {
     _id?: string;
     name: string;
-    price: number;
-    type: string;
+    type: number;
     phone: string;
     date: Date;
 }

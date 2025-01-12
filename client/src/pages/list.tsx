@@ -18,23 +18,17 @@ export default function List() {
                 <ul>
                     {haircuts.map((haircut) => (
                         <li key={haircut._id}>
-                            <p style={{ display: "inline" }}>Name:</p>
+                            <p style={{ display: "inline" }}>שם:</p>
                             {haircut.name}
                             <br />
+                            <p style={{ display: "inline" }}>סוג:</p>
 
-                            <p style={{ display: "inline" }}>Price:</p>
-                            {haircut.price}
+                            {haircut.type === 0 ? "רגיל" : "זקן"}
                             <br />
-
-                            <p style={{ display: "inline" }}>Type:</p>
-
-                            {haircut.type}
-                            <br />
-                            <p style={{ display: "inline" }}>Phone:</p>
+                            <p style={{ display: "inline" }}>טלפון:</p>
                             {haircut.phone}
                             <br />
-
-                            <p style={{ display: "inline" }}>Date:</p>
+                            <p style={{ display: "inline" }}>תאריך:</p>
 
                             {haircut.date.toString()}
 
