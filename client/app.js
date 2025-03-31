@@ -66,7 +66,7 @@ const haircuts = new mongoose.Schema({
 const Haircuts = mongoose.model("Haircuts", haircuts);
 
 app.post(
-    "/",
+    "/api",
     async (req, res, next) => {
         const { name, phone, type, date } = req.body;
 
@@ -120,7 +120,7 @@ app.post(
     }
 );
 
-app.get("/", async (_req, res) => {
+app.get("/api", async (_req, res) => {
     try {
         const haircuts = await Haircuts.find();
         res.json(haircuts);
@@ -129,7 +129,7 @@ app.get("/", async (_req, res) => {
     }
 });
 
-app.get("/today", async (_req, res) => {
+app.get("/api/today", async (_req, res) => {
     try {
         const today = new Date();
         const haircuts = await Haircuts.find({
@@ -144,7 +144,7 @@ app.get("/today", async (_req, res) => {
     }
 });
 
-app.delete("/:id", async (req, res) => {
+app.delete("/api/:id", async (req, res) => {
     try {
         const { id } = req.params;
         await Haircuts.findByIdAndDelete(id);

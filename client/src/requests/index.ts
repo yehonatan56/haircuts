@@ -1,4 +1,4 @@
-const serverUrl = "";
+const serverUrl = "https://guarded-soda-production.up.railway.app/api";
 
 export interface Haircut {
     _id?: string;
