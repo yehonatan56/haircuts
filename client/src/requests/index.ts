@@ -1,4 +1,4 @@
-const serverUrl = "http://localhost:3000";
+const serverUrl = "";
 
 export interface Haircut {
     _id?: string;

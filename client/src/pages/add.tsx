@@ -13,7 +13,15 @@ export default function Add() {
     const [status, setStatus] = useState<statuses>("waiting for submission");
 
     return (
-        <div style={{ textAlign: "center" }}>
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100vw",
+            }}
+        >
             <h1>הוספת תור</h1>
             <form
                 style={{
@@ -26,6 +34,7 @@ export default function Add() {
                     width: "200px",
                     margin: "auto",
                     marginTop: "200px",
+                    transform: "scale(1.5)",
                 }}
                 onSubmit={async (e) => {
                     e.preventDefault();

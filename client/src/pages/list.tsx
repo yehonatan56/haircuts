@@ -12,9 +12,9 @@ export default function List() {
         });
     }, []);
     return (
-        <div>
-            <h1>List of Haircuts</h1>
-            <ScrollArea h={300}>
+        <div style={{ textAlign: "center" }}>
+            <h1>רשימת תספורות</h1>
+            <ScrollArea h={200} scrollbars="y">
                 <ul>
                     {haircuts.map((haircut) => (
                         <li key={haircut._id}>
@@ -31,7 +31,7 @@ export default function List() {
                             <p style={{ display: "inline" }}>תאריך:</p>
 
                             {haircut.date.toString()}
-
+                            <br />
                             <Trash
                                 onClick={async () => {
                                     await deleteHaircut(haircut._id as string);
